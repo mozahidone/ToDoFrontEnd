@@ -1,22 +1,33 @@
 <div class="card bg-warning" style="border:4px solid white;">
   <div class="card-body" style="padding: 8px; margin-top: 8px;">
-    <div>
-      <!-- title -->
-      <input type="text"
-             [(ngModel)]="note.title"
-             (change)="updateNote()"
-             class="input-label-lg"
-             maxlength="18" style="width: 80%"
-      />
-      <a (click)="deleteNote()" class="pull-right text-danger">
-        <i class="fa fa-trash-o"></i>
-      </a>
-    </div>
-    <!-- text -->
-    <textarea class="input-label"
-              style="width: 100%" rows="6"
-              [(ngModel)]="note.description"
-              (change)="updateNote()"></textarea>
-    <!--<strong class="text-info" style="font-size: small">{{note.lastModifiedOn | date:'dd-MM-yyy HH:mm'}}</strong>-->
+
+
+    <form name="form" (ngSubmit)="f.form.valid && createNote()" #f="ngForm" novalidate>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" name="title" [(ngModel)]="note.title" #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required />
+        <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+          <div *ngIf="title.errors.required">Title is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="form-control" name="description" [(ngModel)]="note.description" #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" required />
+        <div *ngIf="f.submitted && description.invalid" class="invalid-feedback">
+          <div *ngIf="description.errors.required">Description is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Event Date</label>
+        <input type="date" class="form-control" name="eventDate" [(ngModel)]="note.eventDate" #eventDate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && eventDate.invalid }" required />
+        <div *ngIf="f.submitted && eventDate.invalid" class="invalid-feedback">
+          <div *ngIf="eventDate.errors.required">Event Date is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </form>
+
   </div>
 </div>

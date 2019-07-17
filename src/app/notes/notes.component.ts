@@ -8,7 +8,9 @@ import {Note} from "./model/note";
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-  notes: Note[] = [];
+  notes: any[] = [];
+  note: Note;
+  showForm: boolean = false;
 
   constructor(private apiService: ApiService) {
   }
@@ -23,48 +25,53 @@ export class NotesComponent implements OnInit {
       res  => {
         this.notes = res.content;
       },
-      err => {alert("Error occurred while downloading the notes;")}
+      err => {alert("Error occurred while downloading the ToDo;")}
     );
   }
 
   deleteNote(note: Note){
-    if(confirm("Are you sure you want to delete this note?")){
+    if(confirm("Are you sure you want to delete this ToDo?")){
       this.apiService.deleteNote(note.id).subscribe(
         res =>{
           let indexOfNote = this.notes.indexOf(note);
           this.notes.splice(indexOfNote, 1);
         },
-        err=>{alert("An error has occurred deleting the note");}
+        err=>{alert("An error has occurred deleting the ToDo");}
       );
     }
   }
 
-  createNote() {
-    let newNote:Note = {
-      id: null,
-      title: "New Note",
-      description: "Write some text in here"
-    };
-
-    this.apiService.saveNote(newNote).subscribe(
+  createNote(note: Note) {
+    this.apiService.saveNote(note).subscribe(
       res => {
-        newNote.id = res.id;
-        this.notes.push(newNote);
+        this.showForm = false;
+        this.getAllNotes();
       },
-      err => {alert("An error occurred while saving the note");}
+      err => {alert("An error occurred while saving the ToDo");}
     );
   }
 
+  toggleShowForm() {
+    this.note = {
+      id: null,
+      title: "",
+      description: "",
+      eventDate: ""
+    };
+    this.showForm = true;
+  }
+
   updateNote(updatedNote: Note) {
+    this.note = updatedNote;
+    this.note.eventDate = this.note.eventDate.substring(0, 10);
+    this.showForm = true;
+  }
+
+  /*updateNote(updatedNote: Note) {
     this.apiService.saveNote(updatedNote).subscribe(
       res => {
       },
       err => {alert("An error occurred while saving the note");}
     );
-  }
-
-  selectAllNotes() {
-    this.selectedNotebook = null;
-    this.getAllNotes();
-  }
+  }*/
 }

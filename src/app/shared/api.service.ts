@@ -21,16 +21,12 @@ export class ApiService {
 
   }
 
-  postFeedback(feedback: FeedbackViewModel): Observable<any> {
-    return this.http.post(this.SEND_FEEDBACK_URL, feedback);
-  }
-
   deleteNotebook(id: string): Observable<any> {
     return this.http.delete(this.DELETE_NOTEBOOK_URL + id);
   }
 
-  getAllNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(this.ALL_NOTES_URL);
+  getAllNotes(): Observable<any> {
+    return this.http.get<any>(this.ALL_NOTES_URL);
   }
 
   getNotesByNotebook(notebookId: string): Observable<Note[]> {

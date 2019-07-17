@@ -9,13 +9,24 @@ import {Note} from "../model/note";
 export class NoteComponent implements OnInit {
 
   @Input() note: Note;
+  @Output() noteCreated: EventEmitter<Note> = new EventEmitter<Note>();
   @Output() noteUpdated: EventEmitter<Note> = new EventEmitter<Note>();
   @Output() noteDeleted: EventEmitter<Note> = new EventEmitter<Note>();
 
   constructor() {
+    /*this.note = {
+      id: null,
+      title: "",
+      description: "",
+      eventDate: ""
+    };*/
   }
 
   ngOnInit() {
+  }
+
+  createNote() {
+    this.noteCreated.emit(this.note);
   }
 
   updateNote() {
